@@ -1,0 +1,149 @@
+:root {
+    --black: rgb(32, 32, 32);
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    font-family: "Poppins", sans-serif;
+}
+
+h1, h2, h3, h4, h5, p{
+    padding: 0px;
+    margin: 0px;
+}
+
+#wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.5rem;
+    gap: 1rem;
+
+}
+#header h1 {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: var(--black);
+    font-weight: normal;
+    color: white;
+    cursor: default;
+}
+#header a {
+    color: var(--black);
+}
+
+#nav {
+    all: unset;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-top: 1px solid lightgray;
+
+}
+
+#nav li {
+    all: unset;
+    width: 16rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#nav li a {
+    width: calc(100%);
+    padding: 0.5rem 0rem;
+    text-decoration: none;
+    color: var(--black);
+    transition: all 0.1s ease-in-out;
+}
+
+#nav li a:hover {
+    background-color: var(--black);
+    color: white;
+}
+
+
+.btn {
+    max-height: 1.2rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 4px;
+    background-color: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: large;
+    transition: all 0.1s ease-in-out;
+}
+.btn i {
+    color: white;
+}
+
+.btn:hover {
+    scale: 1.05;
+}
+
+.product-card {
+    width: 4rem;
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.product-card img {
+    width: 8rem;
+    height: 16rem;
+}
+
+
+.w-100{
+    width: 100%;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+.space-around {
+    justify-content: space-around;
+}
+.space-evenly {
+    justify-content: space-evenly;
+}
+
+.al-s {
+    align-items: start;
+}
+.al-c {
+    align-items: center;
+}
+.al-e {
+    align-items: end;
+}
+
+.js-c-s {
+    justify-content: start;
+}
+.js-c-c {
+    justify-content: center;
+}
+.js-c-e {
+    justify-content: end;
+}
