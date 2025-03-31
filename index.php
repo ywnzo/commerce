@@ -9,7 +9,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
 
 <div id="wrapper">
-    <?php 
+    <?php
         include_once('comps/header.php');
 
         switch ($page) {
@@ -18,6 +18,9 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
                 break;
             case 'products':
                 include_once('comps/pages/products.php');
+                break;
+            case 'product':
+                include_once('comps/pages/product.php');
                 break;
             case 'cart':
                 include_once('comps/pages/cart.php');
@@ -33,4 +36,3 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         include_once('comps/footer.php');
     ?>
 </div>
-
