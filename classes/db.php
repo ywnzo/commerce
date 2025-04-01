@@ -1,22 +1,22 @@
-<?php 
+<?php
 
 class DB {
     static function query($sql) {
         global $conn;
-        $result = mysqli_query($conn, $sql);
-        if(!is_bool($result)) {
-            if(!$result) {
-                echo 'Error occured!';
-                return false;
-            } else {
-                $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                if(is_array($result) && count($result) > 1 || !is_array($result)) {
-                    return $result;
-                }
-                if(is_array($result) && count($result) == 1) { 
-                    return $result[0];
-                }
+        try {
+            $sql = $conn->prepare($sql);
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            if(is_array($result) && count($result) > 1 || !is_array($result)) {
+                return $result;
             }
+            if(is_array($result) && count($result) == 1) {
+                return $result[0];
+            }
+        } catch(PDOException $e) {
+            echo 'Error occured: ' . $e->getMessage();
+            return false;
         }
     }
 
@@ -35,9 +35,26 @@ class DB {
         return self::query($sql);
     }
 
-    public static function insert($table, $properties, $values) {
+    public static function insert($table, $columns) {
+        $properties = '';
+        $values = '';
+        foreach($columns as $property => $value) {
+            $properties .= $property;
+            $values .= "'" . $value . "'";
+            if(array_key_last($columns) != $property) {
+                $properties .= ', ';
+                $values .= ', ';
+            }
+        }
+
         $sql = "INSERT INTO $table ($properties) VALUES ($values)";
-        return self::query($sql);
+        try {
+            $result = self::query($sql);
+        } catch(PDOException $e) {
+            echo 'Error occured: ' . $e->getMessage();
+            return false;
+        }
+        return $result;
     }
 }
 

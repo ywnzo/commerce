@@ -43,15 +43,6 @@ if(!$isAdmin && isset($_POST['login'])) {
     setcookie('sessionID', $sessionID, time() + (86400 * 1), "/");
 }
 
-if(isset($_POST['add-product'])) {
-    $name = htmlspecialchars($_POST['name']);
-    $price = htmlspecialchars($_POST['price']);
-    $description = htmlspecialchars($_POST['description']);
-
-    DB::insert('products', 'name, price, description', "'$name', '$price', '$description'");
-    $mssg = 'Product added successfully!';
-}
-
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
 ?>
@@ -71,6 +62,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
     <link rel="stylesheet" href="public/css/style.css?v=<?php echo filemtime('public/css/style.css')?>">
 
+    <script src="public/js/add_product.js" defer></script>
 
     <title>Commerce Admin</title>
 </head>
@@ -100,16 +92,10 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
                         <h1 style="text-align: center;">Welcome, Admin!</h1>
 
                     <?php elseif($page == 'products'): ?>
-                        <form method="POST" action="">
-                            <h2>Add a product</h2>
-                            <input type="text" name="name" placeholder="Name">
-                            <input type="text" name="price" placeholder="Price">
-                            <textarea name="description" placeholder="Description" rows="8"></textarea>
-                            <input type="submit" name="add-product" value="Add Product">
-                        </form>
-                        <p><?php echo $mssg ?></p>
+                        <?php include_once('comps/admin/add_product.php') ?>
                     <?php else: ?>
                     <?php endif; ?>
+                    <p><?php echo $mssg ?></p>
 
                 </div>
 
