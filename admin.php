@@ -36,11 +36,21 @@ if(!$isAdmin && isset($_POST['login'])) {
     $ip = getUserIP();
 
     $user = DB::select('*', 'users', "name = '$username'");
+    if(!isset($user['ID'])) {
+        return;
+    }
+    if(!password_verify($password, $user['password'])) {
+        return;
+    }
     DB::update('users', "sessionID = '$sessionID', sessionIP = '$ip'", "ID = '{$user['ID']}'");
 
     $isAdmin = password_verify($password, $user['password']);
     setcookie('userID', $user['ID'], time() + (86400 * 1), "/");
     setcookie('sessionID', $sessionID, time() + (86400 * 1), "/");
+}
+
+if(!$isAdmin) {
+    return;
 }
 
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
@@ -93,9 +103,14 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
                     <?php elseif($page == 'products'): ?>
                         <?php include_once('comps/admin/add_product.php') ?>
+
+                        <?php include_once('comps/admin/product_table.php') ?>
+
                     <?php else: ?>
                     <?php endif; ?>
                     <p><?php echo $mssg ?></p>
+
+
 
                 </div>
 

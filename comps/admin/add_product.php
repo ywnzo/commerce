@@ -32,7 +32,10 @@ if(isset($_POST['add-product'])) {
     <input type="text" name="name" placeholder="Name">
     <input type="text" name="price" placeholder="Price">
     <textarea name="description" placeholder="Description" rows="8"></textarea>
-    <input type="file" name="images[]" id="upload-images" multiple>
+    <div class="file-upload-wrapper">
+        <label for="upload-images" class="upload-file">Add Images</label>
+        <input type="file" name="images[]" id="upload-images" multiple>
+    </div>
     <div class="upload-image-grid">
     </div>
     <input type="submit" name="add-product" value="Add Product">
