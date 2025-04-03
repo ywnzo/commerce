@@ -36,12 +36,6 @@ if(!$isAdmin && isset($_POST['login'])) {
     $ip = getUserIP();
 
     $user = DB::select('*', 'users', "name = '$username'");
-    if(!isset($user['ID'])) {
-        return;
-    }
-    if(!password_verify($password, $user['password'])) {
-        return;
-    }
     DB::update('users', "sessionID = '$sessionID', sessionIP = '$ip'", "ID = '{$user['ID']}'");
 
     $isAdmin = password_verify($password, $user['password']);
