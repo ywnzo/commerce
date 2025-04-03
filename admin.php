@@ -49,11 +49,15 @@ if(!$isAdmin && isset($_POST['login'])) {
     setcookie('sessionID', $sessionID, time() + (86400 * 1), "/");
 }
 
-if(!$isAdmin) {
-    return;
-}
-
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+
+include('models/productModel.php');
+$productModel = new ProductModel($conn);
+$product = $productModel->getProduct([
+    1
+]);
+print_r($product);
 
 ?>
 
@@ -73,6 +77,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
     <link rel="stylesheet" href="public/css/style.css?v=<?php echo filemtime('public/css/style.css')?>">
 
     <script src="public/js/add_product.js" defer></script>
+    <script src="public/js/search_admin.js" defer></script>
 
     <title>Commerce Admin</title>
 </head>
@@ -102,21 +107,16 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
                         <h1 style="text-align: center;">Welcome, Admin!</h1>
 
                     <?php elseif($page == 'products'): ?>
-                        <?php include_once('comps/admin/add_product.php') ?>
-
-                        <?php include_once('comps/admin/product_table.php') ?>
-
+                        <?php if($action === 'edit'): ?>
+                            <?php include_once('comps/admin/edit_product.php') ?>
+                        <?php else: ?>
+                            <?php include_once('comps/admin/add_product.php') ?>
+                            <?php include_once('comps/admin/product_table.php') ?>
+                        <?php endif; ?>
                     <?php else: ?>
                     <?php endif; ?>
                     <p><?php echo $mssg ?></p>
-
-
-
                 </div>
-
-
-
-
             </div>
         <?php endif; ?>
     </div>

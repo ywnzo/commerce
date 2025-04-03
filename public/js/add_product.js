@@ -31,16 +31,17 @@ function handleDrop(e) {
 }
 
 function addImage(i, src) {
-  const image = document.createElement('img');
-  image.src = src;
   const imageWrapper = document.createElement('div');
   imageWrapper.classList.add('upload-image-wrapper');
-  image.alt = i;
   imageWrapper.draggable = true;
   imageWrapper.addEventListener('dragstart', handleDragStart);
   imageWrapper.addEventListener('dragover', handleDragOver);
   imageWrapper.addEventListener('drop', handleDrop);
   imageWrapper.id = i;
+
+  const image = document.createElement('img');
+  image.src = src;
+  image.alt = i;
 
   imageWrapper.appendChild(image)
   uploadImageGrid.appendChild(imageWrapper);

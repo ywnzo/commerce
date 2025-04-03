@@ -7,7 +7,6 @@ $upIcon = ' &#x2191;';
 $downIcon = '&#x2193;';
 
 $productCount = DB::select('COUNT(ID) as count', 'products', "ID > 0")['count'];
-$productCount = 512;
 $resultCount = 16;
 $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
 $maxOffset = ceil($productCount / $resultCount) - 1;
@@ -61,10 +60,18 @@ function getMaxOffset() {
 $sort = isset($_COOKIE['sort']) ? $_COOKIE['sort'] : 'ID';
 if(isset($_POST['sort'])) {
     $sort = $_POST['sort'];
-    $products = DB::select('*', 'products', "ID > 0 ORDER BY " . $sort . ' ' . getOrder($sort));
+    $products = DB::select('*',
+        'products',
+        "ID > 0 ORDER BY " . $sort . ' ' . getOrder($sort) . " LIMIT $resultCount OFFSET $offset");
     $sortStates[$sort] = !$sortStates[$sort];
 } else {
-    $products = DB::select('*', 'products', "ID > 0 ORDER BY " . $sort . ' ' . getOrder($sort));
+    $products = DB::select('*',
+    'products',
+    "ID > 0 ORDER BY " . $sort . ' ' . getOrder($sort)  . " LIMIT $resultCount OFFSET $offset");
+}
+
+if(!isset($products) || !is_array($products)) {
+    $products = [];
 }
 
 $_SESSION['sortStates'] = $sortStates;
@@ -82,20 +89,30 @@ $_SESSION['sortStates'] = $sortStates;
     <table id="product-table">
         <thead>
             <form method="post">
-                <th><button class="sort-button" name="sort" value="ID">ID <?php echo getIcon('ID') ?></button></th>
-                <th><button class="sort-button" name="sort" value="name">Name <?php echo getIcon('name') ?></button></th>
-                <th><button class="sort-button" name="sort" value="price">Price<?php echo getIcon('price') ?></button></th>
-                <th><button class="sort-button" name="sort" value="quantity">Quantity <?php echo getIcon('quantity') ?></button></th>
-                <th>Actions</th>
+                <th style="width: 10%;">
+                    <button class="sort-button" name="sort" value="ID">ID <?php echo getIcon('ID') ?></button>
+                </th>
+                <th style="width: 60%;">
+                    <button class="sort-button" name="sort" value="name">Name <?php echo getIcon('name') ?></button>
+                </th>
+                <th style="width: 15%;">
+                    <button class="sort-button" name="sort" value="price">Price<?php echo getIcon('price') ?></button>
+                </th>
+                <th style="width: 15%;">
+                    <button class="sort-button" name="sort" value="quantity">Quant. <?php echo getIcon('quantity') ?></button>
+                </th>
+                <th style="">Actions</th>
             </form>
 
         </thead>
 
         <tbody>
             <?php foreach($products as $product): ?>
-                <tr>
-                    <td><?php echo $product['ID'] ?></td>
-                    <td><?php echo $product['name'] ?></td>
+                <tr class="product-row">
+                    <td class="id-cell"><?php echo $product['ID'] ?></td>
+                    <td class="name-cell">
+                        <a href="?page=products&action=edit&id=<?php echo $product['ID'] ?>"> <?php echo $product['name'] ?> </a>
+                    </td>
                     <td><?php echo $product['price'] ?></td>
                     <td><?php echo $product['quantity'] ?></td>
                     <td>
